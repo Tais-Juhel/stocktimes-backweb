@@ -1,37 +1,17 @@
 <template>
-    <div class="shoes-edit">
+    <div class="brands-edit">
         <form>
             <table>
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>{{ shoe_id }}</th>
+                        <th>{{ brand_id }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Type</td>
-                        <td><input type="text" v-model="shoe.type"></td>
-                    </tr>
-                    <tr>
                         <td>Name</td>
-                        <td><input type="text" v-model="shoe.name"></td>
-                    </tr>
-                    <tr>
-                        <td>Last Sale</td>
-                        <td><input type="number" v-model="shoe.LastSale"></td>
-                    </tr>
-                    <tr>
-                        <td>Lowest Ask</td>
-                        <td><input type="number" v-model="shoe.LowestAsk"></td>
-                    </tr>
-                    <tr>
-                        <td>Highest Bid</td>
-                        <td><input type="number" v-model="shoe.HighestBid"></td>
-                    </tr>
-                    <tr>
-                        <td>Brand</td>
-                        <td><input type="text" v-model="shoe.brand_id"></td>
+                        <td><input type="text" v-model="brand.name"></td>
                     </tr>
                 </tbody>
             </table>
@@ -44,34 +24,29 @@
 import db from '../components/firebaseInit'
 
 export default {
-    name: 'shoes-edit',
+    name: 'brands-edit',
     data() {
         return {
-            shoe: {},
-            shoe_id: null
+            brand: {},
+            brand_id: null
         }
     },
     methods: {
         async valid() {
-            await db.collection("model").doc(this.shoe_id).set({
-                type: this.shoe.type,
-                name: this.shoe.name,
-                LastSale: this.shoe.LastSale,
-                LowestAsk: this.shoe.LowestAsk,
-                HighestBid: this.shoe.HighestBid,
-                brand_id: this.shoe.brand_id,
+            await db.collection("brand").doc(this.brand_id).set({
+                name: this.brand.name
             })
             
-            window.location = "/shoes"
+            window.location = "/brands"
         }
     },
     async mounted() {
-        const shoeId = await this.$route.params.id
-        this.shoe_id = shoeId
+        const brandId = await this.$route.params.id
+        this.brand_id = brandId
 
-        await db.collection("model").doc(shoeId).get().then((doc) => {
+        await db.collection("brand").doc(brandId).get().then((doc) => {
             if (doc.exists) {
-                this.shoe = doc.data();
+                this.brand = doc.data();
             } else {
                 // doc.data() will be undefined in this case
                 console.log("No such document!");
@@ -82,7 +57,7 @@ export default {
 </script>
 
 <style lang="scss">
-.shoes-edit {
+.brands-edit {
     display: flex;
     flex-direction: column;
     justify-content: center;

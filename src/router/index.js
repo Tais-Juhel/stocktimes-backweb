@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import Users from '../views/Users.vue'
 import Shoes from '../views/Shoes.vue'
 import ShoesEdit from '../views/ShoesEdit.vue'
+import Brands from '../views/Brands.vue'
+import BrandEdit from '../views/BrandEdit.vue'
 
 Vue.use(VueRouter)
 
@@ -26,6 +28,16 @@ const routes = [
     path: '/shoes/:id',
     name: 'shoesEdit',
     component: ShoesEdit
+  },
+  {
+    path: '/brands',
+    name: 'brands',
+    component: Brands
+  },
+  {
+    path: '/brands/:id',
+    name: 'brandsEdit',
+    component: BrandEdit
   }
 ]
 
