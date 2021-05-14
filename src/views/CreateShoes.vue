@@ -1,37 +1,41 @@
 <template>
-    <div class="shoes-edit">
+    <div class="create-shoes">
         <form>
             <table>
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>{{ shoe_id }}</th>
+                        <th>{{ newId }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>Type</td>
-                        <td><input type="text" v-model="shoe.type"></td>
+                        <td><input type="text" v-model="shoes.type"></td>
                     </tr>
                     <tr>
                         <td>Name</td>
-                        <td><input type="text" v-model="shoe.name"></td>
+                        <td><input type="text" v-model="shoes.name"></td>
                     </tr>
                     <tr>
                         <td>Last Sale</td>
-                        <td><input type="number" v-model="shoe.LastSale"></td>
+                        <td><input type="number" v-model="shoes.LastSale"></td>
                     </tr>
                     <tr>
                         <td>Lowest Ask</td>
-                        <td><input type="number" v-model="shoe.LowestAsk"></td>
+                        <td><input type="number" v-model="shoes.LowestAsk"></td>
                     </tr>
                     <tr>
                         <td>Highest Bid</td>
-                        <td><input type="number" v-model="shoe.HighestBid"></td>
+                        <td><input type="number" v-model="shoes.HighestBid"></td>
                     </tr>
                     <tr>
                         <td>Brand</td>
-                        <td>{{ brand_name }}</td>
+                        <td>
+                            <select v-model="shoes.brand_id">
+                                <option v-for="brand in brands" :key="brand.id" :value="brand.id">{{ brand.name }}</option>
+                            </select>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -44,55 +48,57 @@
 import db from '../components/firebaseInit'
 
 export default {
-    name: 'shoes-edit',
+    name: 'create-shoes',
     data() {
         return {
-            shoe: {},
-            shoe_id: null,
-            brand_name: ''
+            newId: '',
+            shoes: {
+                'type': '',
+                'name': '',
+                'LastSale': '',
+                'LowestAsk': '',
+                'HighestBid': '',
+                'brand_id': ''
+            },
+            brands: []
         }
     },
     methods: {
         async valid() {
-            await db.collection("model").doc(this.shoe_id).set({
-                type: this.shoe.type,
-                name: this.shoe.name,
-                LastSale: this.shoe.LastSale,
-                LowestAsk: this.shoe.LowestAsk,
-                HighestBid: this.shoe.HighestBid,
-                brand_id: this.shoe.brand_id,
+            await db.collection("model").doc(this.newId).set({
+                type: this.shoes.type,
+                name: this.shoes.name,
+                LastSale: this.shoes.LastSale,
+                LowestAsk: this.shoes.LowestAsk,
+                HighestBid: this.shoes.HighestBid,
+                brand_id: this.shoes.brand_id
             })
             
             window.location = "/shoes"
         }
     },
-    async mounted() {
-        const shoeId = await this.$route.params.id
-        this.shoe_id = shoeId
+    mounted() {
+        this.newId = db.collection('model').doc().id
 
-        await db.collection("model").doc(shoeId).get().then((doc) => {
-            if (doc.exists) {
-                this.shoe = doc.data();
-            } else {
-                // doc.data() will be undefined in this case
-                console.log("No such document!");
-            }
-        })
+        db.collection('brand').get().then(
+            querySnaphot => {
+                querySnaphot.forEach(doc => {
+                    const data = {
+                        'id': doc.id,
+                        'name': doc.data().name
+                    }
 
-        await db.collection("brand").doc(this.shoe.brand_id).get().then((doc) => {
-            if (doc.exists) {
-                this.brand_name = doc.data().name;
-            } else {
-                // doc.data() will be undefined in this case
-                console.log("No such document!");
+                    this.brands.push(data)
+                })
             }
-        })
+        )
+
     }
 }
 </script>
 
 <style lang="scss">
-.shoes-edit {
+.create-shoes {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -130,7 +136,7 @@ export default {
             font-weight: 600;
         }
 
-        input {
+        input, select {
             font-size: 18px;
             height: 35px;
             border: none;

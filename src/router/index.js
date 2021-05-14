@@ -5,6 +5,9 @@ import Shoes from '../views/Shoes.vue'
 import ShoesEdit from '../views/ShoesEdit.vue'
 import Brands from '../views/Brands.vue'
 import BrandEdit from '../views/BrandEdit.vue'
+import CreateBrand from '../views/CreateBrand.vue'
+import CreateShoes from '../views/CreateShoes.vue'
+
 
 Vue.use(VueRouter)
 
@@ -30,6 +33,11 @@ const routes = [
     component: ShoesEdit
   },
   {
+    path: '/create/shoes',
+    name: 'createShoes',
+    component: CreateShoes
+  },
+  {
     path: '/brands',
     name: 'brands',
     component: Brands
@@ -38,6 +46,11 @@ const routes = [
     path: '/brands/:id',
     name: 'brandsEdit',
     component: BrandEdit
+  },
+  {
+    path: '/create/brand',
+    name: 'createBrand',
+    component: CreateBrand
   }
 ]
 
