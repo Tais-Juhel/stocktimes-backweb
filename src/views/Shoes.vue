@@ -4,12 +4,13 @@
             <thead>
                 <tr>
                     <th @click="sortTable(0)">Id</th>
-                    <th @click="sortTable(1)">Type</th>
-                    <th @click="sortTable(2)">Name</th>
-                    <th @click="sortTable(3)">Last Sale</th>
-                    <th @click="sortTable(4)">Lowest Sale</th>
-                    <th @click="sortTable(5)">Highest Bid</th>
-                    <th @click="sortTable(6)">Brand Id</th>
+                    <th @click="sortTable(1)">Img</th>
+                    <th @click="sortTable(2)">Type</th>
+                    <th @click="sortTable(3)">Name</th>
+                    <th @click="sortTable(4)">Last Sale</th>
+                    <th @click="sortTable(5)">Lowest Sale</th>
+                    <th @click="sortTable(6)">Highest Bid</th>
+                    <th @click="sortTable(7)">Brand Id</th>
                     <th class="edit">E</th>
                     <th class="delete">D</th>
                 </tr>

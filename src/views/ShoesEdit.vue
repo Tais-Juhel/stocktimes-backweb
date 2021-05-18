@@ -10,6 +10,10 @@
                 </thead>
                 <tbody>
                     <tr>
+                        <td>Image</td>
+                        <td><input type="text" v-model="shoe.image"></td>
+                    </tr>
+                    <tr>
                         <td>Type</td>
                         <td><input type="text" v-model="shoe.type"></td>
                     </tr>
@@ -68,6 +72,7 @@ export default {
                 LowestAsk: this.shoe.LowestAsk,
                 HighestBid: this.shoe.HighestBid,
                 brand_id: this.shoe.brand_id,
+                image: this.shoe.image
             })
             
             window.location = "/shoes"

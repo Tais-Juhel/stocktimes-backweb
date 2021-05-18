@@ -13,6 +13,10 @@
                         <td>Name</td>
                         <td><input type="text" v-model="brand.name"></td>
                     </tr>
+                    <tr>
+                        <td>Image</td>
+                        <td><input type="text" v-model="brand.image"></td>
+                    </tr>
                 </tbody>
             </table>
         </form>
@@ -30,14 +34,16 @@ export default {
         return {
             newId: '',
             brand: {
-                'name': ''
+                'name': '',
+                'image': ''
             }
         }
     },
     methods: {
         async valid() {
             await firebase.firestore().collection("brand").doc(this.newId).set({
-                name: this.brand.name
+                name: this.brand.name,
+                image: this.brand.image
             })
             
             window.location = "/brands"

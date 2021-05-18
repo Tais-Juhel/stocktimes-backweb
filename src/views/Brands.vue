@@ -4,7 +4,8 @@
             <thead>
                 <tr>
                     <th @click="sortTable(0)">Id</th>
-                    <th @click="sortTable(1)">Name</th>
+                    <th @click="sortTable(1)">Image</th>
+                    <th @click="sortTable(2)">Name</th>
                     <th class="edit">E</th>
                     <th class="delete">D</th>
                 </tr>
@@ -12,6 +13,7 @@
             <tbody>
               <tr v-for="brand in brands" :key="brand.id">
                 <td>{{ brand.id }}</td>
+                <td><img :src="brand.image" :alt="brand.id"></td>
                 <td>{{ brand.name }}</td>
                 <td><a :href="brand.linkEdit"><i class="fas fa-edit"></i></a></td>
                 <td><button @click="deleteBrand(brand.id)" type="button"><i class="fas fa-trash"></i></button></td>
@@ -39,6 +41,7 @@ export default {
           const data = {
             'id': doc.id,
             'name': doc.data().name,
+            'image': doc.data().image,
             'linkEdit': '/brands/'+doc.id
           }
 
@@ -151,5 +154,8 @@ export default {
           font-size: 16px;
         }
     }
+}
+img {
+  width: 50px;
 }
 </style>
