@@ -31,7 +31,12 @@
                     </tr>
                     <tr>
                         <td>Brand</td>
-                        <td>{{ brand_name }}</td>
+                        <td>
+                            <select v-model="shoe.brand_id">
+                                <option :value='brandSelect.id' selected>{{ brandSelect.name }}</option>
+                                <option v-for="brand in brands" :key="brand.id" value="brand.id">{{ brand.name }}</option>
+                            </select>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -41,7 +46,8 @@
 </template>
 
 <script>
-import db from '../components/firebaseInit'
+import firebase from '../components/firebaseInit';
+import 'firebase/firestore';
 
 export default {
     name: 'shoes-edit',
@@ -49,12 +55,13 @@ export default {
         return {
             shoe: {},
             shoe_id: null,
-            brand_name: ''
+            brands: [],
+            brandSelect: {}
         }
     },
     methods: {
         async valid() {
-            await db.collection("model").doc(this.shoe_id).set({
+            await firebase.firestore().collection("model").doc(this.shoe_id).set({
                 type: this.shoe.type,
                 name: this.shoe.name,
                 LastSale: this.shoe.LastSale,
@@ -70,7 +77,7 @@ export default {
         const shoeId = await this.$route.params.id
         this.shoe_id = shoeId
 
-        await db.collection("model").doc(shoeId).get().then((doc) => {
+        await firebase.firestore().collection("model").doc(shoeId).get().then((doc) => {
             if (doc.exists) {
                 this.shoe = doc.data();
             } else {
@@ -79,14 +86,23 @@ export default {
             }
         })
 
-        await db.collection("brand").doc(this.shoe.brand_id).get().then((doc) => {
-            if (doc.exists) {
-                this.brand_name = doc.data().name;
-            } else {
-                // doc.data() will be undefined in this case
-                console.log("No such document!");
+        await firebase.firestore().collection("brand").get().then(
+            querySnaphot => {
+                querySnaphot.forEach(doc => {
+                    if(doc.id === this.shoe.brand_id) {
+                        this.brandSelect = {
+                            'id': doc.id,
+                            'name': doc.data().name
+                        }
+                    } else {
+                        this.brands.push({
+                            'id': doc.id,
+                            'name': doc.data().name
+                        })
+                    }
+                })
             }
-        })
+        )
     }
 }
 </script>

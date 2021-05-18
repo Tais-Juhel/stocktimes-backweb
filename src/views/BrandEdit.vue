@@ -21,7 +21,8 @@
 </template>
 
 <script>
-import db from '../components/firebaseInit'
+import firebase from '../components/firebaseInit';
+import 'firebase/firestore';
 
 export default {
     name: 'brands-edit',
@@ -33,7 +34,7 @@ export default {
     },
     methods: {
         async valid() {
-            await db.collection("brand").doc(this.brand_id).set({
+            await firebase.firestore().collection("brand").doc(this.brand_id).set({
                 name: this.brand.name
             })
             
@@ -44,7 +45,7 @@ export default {
         const brandId = await this.$route.params.id
         this.brand_id = brandId
 
-        await db.collection("brand").doc(brandId).get().then((doc) => {
+        await firebase.firestore().collection("brand").doc(brandId).get().then((doc) => {
             if (doc.exists) {
                 this.brand = doc.data();
             } else {

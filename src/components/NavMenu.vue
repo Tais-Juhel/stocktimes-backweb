@@ -7,7 +7,7 @@
     </div>
     <div class="nav-list">
       <ul class="list-tab">
-        <li class="nav-item"><router-link class="nav-link" to="/users">Users</router-link></li>
+        <!-- <li class="nav-item"><router-link class="nav-link" to="/users">Users</router-link></li> -->
         <li class="nav-item"><router-link class="nav-link" to="/shoes">Shoes</router-link></li>
         <li class="nav-item"><router-link class="nav-link" to="/brands">Brands</router-link></li>
       </ul>

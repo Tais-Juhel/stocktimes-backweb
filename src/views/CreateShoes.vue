@@ -30,6 +30,10 @@
                         <td><input type="number" v-model="shoes.HighestBid"></td>
                     </tr>
                     <tr>
+                        <td>Image</td>
+                        <td><input type="text" v-model="shoes.image"></td>
+                    </tr>
+                    <tr>
                         <td>Brand</td>
                         <td>
                             <select v-model="shoes.brand_id">
@@ -45,7 +49,8 @@
 </template>
 
 <script>
-import db from '../components/firebaseInit'
+import firebase from '../components/firebaseInit';
+import 'firebase/firestore';
 
 export default {
     name: 'create-shoes',
@@ -58,29 +63,31 @@ export default {
                 'LastSale': '',
                 'LowestAsk': '',
                 'HighestBid': '',
-                'brand_id': ''
+                'brand_id': '',
+                'image': ''
             },
             brands: []
         }
     },
     methods: {
         async valid() {
-            await db.collection("model").doc(this.newId).set({
+            await firebase.firestore().collection("model").doc(this.newId).set({
                 type: this.shoes.type,
                 name: this.shoes.name,
                 LastSale: this.shoes.LastSale,
                 LowestAsk: this.shoes.LowestAsk,
                 HighestBid: this.shoes.HighestBid,
-                brand_id: this.shoes.brand_id
+                brand_id: this.shoes.brand_id,
+                image: this.shoes.image
             })
             
             window.location = "/shoes"
         }
     },
     mounted() {
-        this.newId = db.collection('model').doc().id
+        this.newId = firebase.firestore().collection('model').doc().id
 
-        db.collection('brand').get().then(
+        firebase.firestore().collection('brand').get().then(
             querySnaphot => {
                 querySnaphot.forEach(doc => {
                     const data = {

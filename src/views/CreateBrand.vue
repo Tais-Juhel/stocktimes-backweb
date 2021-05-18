@@ -21,7 +21,8 @@
 </template>
 
 <script>
-import db from '../components/firebaseInit'
+import firebase from '../components/firebaseInit';
+import 'firebase/firestore';
 
 export default {
     name: 'create-brand',
@@ -35,7 +36,7 @@ export default {
     },
     methods: {
         async valid() {
-            await db.collection("brand").doc(this.newId).set({
+            await firebase.firestore().collection("brand").doc(this.newId).set({
                 name: this.brand.name
             })
             
@@ -43,7 +44,7 @@ export default {
         }
     },
     mounted() {
-        this.newId = db.collection('brand').doc().id
+        this.newId = firebase.firestore().collection('brand').doc().id
     }
 }
 </script>

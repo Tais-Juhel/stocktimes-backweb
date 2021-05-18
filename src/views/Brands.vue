@@ -23,7 +23,8 @@
 </template>
 
 <script>
-import db from '../components/firebaseInit'
+import firebase from '../components/firebaseInit';
+import 'firebase/firestore';
 
 export default {
   data() {
@@ -32,7 +33,7 @@ export default {
     }
   },
   created() {
-    db.collection('brand').get().then(
+    firebase.firestore().collection('brand').get().then(
       querySnaphot => {
         querySnaphot.forEach(doc => {
           const data = {
@@ -51,7 +52,7 @@ export default {
       const c = confirm('Etes vous sur de vouloir supprimer: '+id)
 
       if(c === true) {
-        await db.collection("brand").doc(id).delete()
+        await firebase.firestore().collection("brand").doc(id).delete()
         location.reload()
       }
     },

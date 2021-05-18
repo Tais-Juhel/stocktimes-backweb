@@ -17,6 +17,7 @@
             <tbody>
               <tr v-for="shoe in shoes" :key="shoe.id">
                 <td>{{ shoe.id }}</td>
+                <td><img :src="shoe.image" :alt="shoe.name"></td>
                 <td>{{ shoe.type }}</td>
                 <td>{{ shoe.name }}</td>
                 <td>{{ shoe.LastSale }}€</td>
@@ -33,7 +34,8 @@
 </template>
 
 <script>
-import db from '../components/firebaseInit'
+import firebase from '../components/firebaseInit';
+import 'firebase/firestore';
 
 export default {
   data() {
@@ -42,11 +44,11 @@ export default {
     }
   },
   created() {
-    db.collection('model').get().then(
+    firebase.firestore().collection('model').get().then(
       querySnaphot => {
         querySnaphot.forEach(doc => {
 
-          db.collection('brand').get().then(
+          firebase.firestore().collection('brand').get().then(
             querySnaphot => {
               querySnaphot.forEach(docB => {
                 let brand_id;
@@ -61,6 +63,7 @@ export default {
                       'brand_id': brand_id,
                       'name': doc.data().name,
                       'type': doc.data().type,
+                      'image': doc.data().image,
                       'linkEdit': '/shoes/'+doc.id
                   }
 
@@ -78,7 +81,7 @@ export default {
       const c = confirm('Etes vous sur de vouloir supprimer: '+id)
 
       if(c === true) {
-        await db.collection("model").doc(id).delete()
+        await firebase.firestore().collection("model").doc(id).delete()
         location.reload()
       }
     },
@@ -190,5 +193,8 @@ export default {
           font-size: 16px;
         }
     }
+}
+img {
+  width: 50px;
 }
 </style>

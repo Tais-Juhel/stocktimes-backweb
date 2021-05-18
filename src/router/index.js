@@ -14,8 +14,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'user',
-    component: Users
+    redirect: 'shoes',
   },
   {
     path: '/users',
